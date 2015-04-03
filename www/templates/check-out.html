@@ -1,0 +1,54 @@
+<ion-view view-title="{{'Check Out'|translate}}">
+  <ion-content has-header="true" padding="false">
+    <div class="list card" ng-if="cart.length==0">
+      <div class="item item-body">
+        <div>there is nothing in the cart</div>
+      </div>
+    </div>
+    <form name="checkOurForm" novalidate="" ng-if="cart.length>0">
+      <ion-list>
+        <label class="item item-input" ng-class="{ 'has-error-lr' : checkOurForm.name.$invalid  && checkOurForm.$submitted}">
+          <span class="input-label" ng-class="{ 'assertive' : checkOurForm.name.$invalid  && checkOurForm.$submitted}" translate>Name</span>
+          <input type="text" name="name" ng-model="sendData.name" placeholder="{{'required'|translate}}" required>
+        </label>
+        <label class="item item-input" ng-class="{ 'has-error-lr' : checkOurForm.telefon.$invalid  && checkOurForm.$submitted}">
+          <span class="input-label" ng-class="{ 'assertive' : checkOurForm.telefon.$invalid  && checkOurForm.$submitted}" translate>Telefon Number</span>
+          <input type="text" name="telefon" placeholder="+48" ng-model="sendData.telefon" required>
+        </label>
+        <label class="item item-input">
+          <span class="input-label" translate>Address</span>
+          <input type="text" name="address" ng-model="sendData.address" placeholder="{{'optional'|translate}}">
+        </label>
+  
+      
+      <div class="item item-divider"></div>
+     
+        <ion-item class="item item-thumbnail-left checkout-item-info" ng-repeat="cartItem in cart">
+          <img ng-src="{{baseURI}}/upload/img/p/{{cartItem.name}}.jpg" fallback-src="img/noImage.jpg" style="background:black; width: 65px;">
+          <h2 class="bs-text-right">{{cartItem.name}}</h2>
+          <p class="bs-text-right checkout-list-quantity">
+            {{cartItem.quantity}} x {{cartItem.pack}} x {{cartItem.price}} PLN
+          </p>
+          <p class="bs-text-right checkout-list-sum">{{cartItem.quantity*cartItem.pack*cartItem.price}} PLN</p>
+        </ion-item>
+      </ion-list>
+      <div class="row">
+        <div class="col bs-text-right">({{getTotalCarton()}} {{'Box'|translate}})</div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h3 translate>Total</h3>
+        </div>
+        <div class="col bs-text-right">
+          <h3>{{getTotalSum()}} PLN</h3>
+        </div>
+      </div>
+      <div class="padding">
+        <button class="button button-block button-positive" ng-click="confirm(checkOurForm)" translate>Confirm</button>
+      </div>
+    </form>
+
+    
+
+  </ion-content>
+</ion-view>

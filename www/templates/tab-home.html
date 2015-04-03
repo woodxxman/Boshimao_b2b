@@ -1,0 +1,33 @@
+<ion-view view-title="Boshimao" hide-back-button="true">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content padding="true">
+    <ion-slide-box does-continue="true" show-pager="true">
+      <ion-slide ng-repeat="slide in data.slides">
+        <div class="item item-image">
+          <a href="#">
+            <img src="test2.jpg"></a>
+        </div>
+      </ion-slide>
+    </ion-slide-box>
+    <div class="row bs-no-padding bs-no-border">
+      <div class="col col-50 bs-no-padding">
+        <div class="item item-image">
+          <a href="#">
+            <img src="test1.jpeg"></a>
+        </div>
+      </div>
+    </div>
+    <div class="row bs-no-padding bs-no-border">
+      <div class="col bs-no-padding">
+        <div class="item item-image">
+          <a href="#">
+            <img src="test1.jpeg"></a>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

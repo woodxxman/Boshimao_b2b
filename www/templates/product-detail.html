@@ -1,0 +1,29 @@
+<!--
+This template loads for the 'tab.friend-detail' state (app.js)
+'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+The FriendsCtrl pulls data from the Friends service (service.js)
+The Friends service returns an array of friend data
+-->
+
+<ion-view view-title="{{productInfo.product.name}}" hide-back-button="true">
+	<ion-nav-buttons side="primary">
+		<button class="button button-icon ion-ios-arrow-back" ng-click="goBack()"></button>
+	</ion-nav-buttons>
+	<ion-nav-buttons side="secondary">
+		<button class="button button-icon icon ion-ios-cart-outline" ng-click="goCart()"></button>
+	</ion-nav-buttons>
+	<ion-content class="padding" on-swipe-up="scroll()">
+		<div class="list card productInfo-list-card">
+			<div class="item item-image">
+				<img ng-src="{{baseURI}}/upload/img/p/{{productInfo.product.name}}.jpg" fallback-src="img/noImage.jpg" >
+			</div>
+			<div class="row">
+	            <div class="col productInfo-productname">{{productInfo.product.name}}</div>
+	            <div class="col productInfo-price">{{productInfo.product.price}} zl</div>
+	        </div>
+		</div>
+	</ion-content>
+	<div class="bar bar-footer bar-stable">
+		<button class="button button-positive pull-right" ng-click="addToCart(productInfo)"><i class="icon ion-ios-cart"></i> {{"Add To Cart"|translate}}</button>
+	</div>
+</ion-view>

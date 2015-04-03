@@ -1,0 +1,17 @@
+<ion-view view-title="{{'Account'| translate}}" hide-back-button="true">
+  <ion-nav-buttons side="primary">
+    <button class="button button-icon icon ion-close" ng-click="goBack()"></button>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+      <label class="item item-input item-select">
+        <div class="input-label" translate>Language</div>
+        <select ng-model="setting.currentLanguage" ng-options="opt as opt.label for opt in setting.languageOption" ng-change="update()"></select>
+      </label>
+    </ion-list>
+  </ion-content>
+ 
+  <ion-footer-bar class="account-footer-bar">
+   <button class="button button-block button-assertive account-footer-bar-button" ng-click="clearStorage()">Clear</button>
+</ion-footer-bar>
+</ion-view>

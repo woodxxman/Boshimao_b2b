@@ -1,0 +1,41 @@
+<ion-view view-title="{{'Cart'| translate}}" hide-back-button="true">
+  <ion-nav-buttons side="primary">
+    <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="secondary">
+    <button class="button button-clear button-positive" ng-if="cart.length>0" ng-click="data.showDelete = !data.showDelete;" translate>Edit</button>
+  </ion-nav-buttons>
+  <ion-content has-header="true" padding="false">
+    <div class="row" ng-if="cart.length==0">
+      <div class="col bs-text-center dark">0 {{"Artikel"| translate}}</div>
+    </div>
+    <ion-list show-delete="data.showDelete">
+      <ion-item class="item item-thumbnail-left item-remove-animate item-icon-right" ng-repeat="cartItem in cart">
+        <img ng-src="{{baseURI}}/upload/img/p/{{cartItem.name}}.jpg" fallback-src="img/noImage.jpg" style="background:black; width: 65px;">
+        <h2>{{cartItem.name}}</h2>
+        <p class="cart-list-quantity">
+          <select ng-model="cartItem.quantity" ng-options="opt as opt for opt in quantityOptions"></select>
+          x {{cartItem.pack}} x {{cartItem.price}}
+        </p>
+        <p class="cart-list-sum">{{cartItem.quantity*cartItem.pack*cartItem.price}} PLN</p>
+        <a href="#/product-detail/{{cartItem.pid}}"> <i class="icon ion-chevron-right icon-accessory"></i>
+        </a>
+
+        <ion-option-button class="button-assertive" ng-click="remove(cartItem)" translate>Delete</ion-option-button>
+        <ion-delete-button class="ion-minus-circled"
+                       ng-click="remove(cartItem)"></ion-delete-button>
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+  <div class="bar bar-footer bar-stable row cart-bar-footer" ng-if="cart.length>
+    0">
+    <div class="col cart-bar-footer-text">{{"Total"| translate}} {{getTotalCarton()}} {{"Box"| translate}}</div>
+    <div class="col bs-text-right cart-bar-footer-text">
+      <span class="cart-bar-footer-sum">{{getTotalSum()}} PLN</span>
+      <br/>
+      <button class="button button-positive cart-bar-footer-button" ng-click="checkOut()"><i class="icon ion-ios-cart"></i> {{"Check Out"|translate}}</button>
+    </div>
+
+  </div>
+</ion-view>

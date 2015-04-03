@@ -1,0 +1,64 @@
+<ion-view view-title="{{'Products'| translate}}" hide-back-button="true">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-back-button></ion-nav-back-button>
+    <ion-nav-buttons side="primary">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="secondary">
+      <button class="button button-icon button-clear ion-ios-gear-outline" ng-class="{'button-positive': filter.active}" ng-click="openModal()"></button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content>
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      pulling-icon="ion-ios-arrow-thin-down"
+      on-refresh="doRefresh()"></ion-refresher>
+    <div class="item item-input-inset products-search-input">
+      <label class="item-input-wrapper"> <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="{{'Product'|translate}}" ng-model="filter.searchStr" ng-change="getNameFilter()"></label>
+      <button class="button button-icon ion-ios-close-outline" ng-click="clearSearchStr()"></button>
+    </div>
+    <div class="row" ng-if="products.length<=0">
+      <div class="col bs-text-center dark">0 {{"Artikel"| translate}}</div>
+    </div>
+    <div class="list" padding="false">
+      <div ng-repeat="product in products">
+        <div class="row" ng-if="$even">
+          <div class="col col-50">
+            <div class="item item-image">
+              <a href="#/product-detail/{{product.product.id}}">
+                <img ng-src="{{baseURI}}/upload/img/p/{{product.product.name}}.jpg" fallback-src="img/noImage.jpg" ></a>
+              <div class="row products-row-productname">
+                <div class="col">{{product.product.name}}</div>
+              </div>
+              <div class="row products-row-price">
+                <div class="col products-info-price">{{product.product.price}} PLN</div>
+                <div class="col products-info-cart">
+                  <button class="button button-small button-light products-info-cart-button" ng-click="addToCart(product)"> <i class="ion-ios-cart"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col col-50" ng-if="products.length>
+            $index+1">
+            <div class="item item-image">
+              <a href="#/product-detail/{{products[$index+1].product.id}}">
+                <img ng-src="{{baseURI}}/upload/img/p/{{products[$index+1].product.name}}.jpg" fallback-src="img/noImage.jpg" ></a>
+              <div class="row products-row-productname">
+                <div class="col">{{products[$index+1].product.name}}</div>
+              </div>
+              <div class="row products-row-price">
+                <div class="col products-info-price">{{products[$index+1].product.price}} PLN</div>
+                <div class="col products-info-cart">
+                  <button class="button button-small button-light products-info-cart-button" ng-click="addToCart(products[$index+1])"> <i class="ion-ios-cart"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

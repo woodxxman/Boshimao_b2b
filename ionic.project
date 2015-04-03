@@ -1,0 +1,14 @@
+{
+  "name": "boshimao",
+  "app_id": "",
+  "proxies": [
+    {
+      "path": "/rest",
+      "proxyUrl": "http://127.0.0.1:8080/SiaderSystemv2/rest"
+    },
+    {
+      "path": "/upload",
+      "proxyUrl": "http://127.0.0.1:8080/SiaderSystemv2/upload"
+    }
+  ]
+}

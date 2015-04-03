@@ -1,0 +1,41 @@
+<ion-view view-title="hello">
+  <ion-content>
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
+    <div class="list">
+      <div ng-repeat="product in products">
+
+        <div class="row" ng-if="$even">
+          <div class="col col-50">
+
+            <div class="item item-image">
+              <a href="#">
+                <img src="shoe.jpg"></a>
+              <div class="item tabs tabs-secondary tabs-icon-right no-border">
+                <a class="tab-item" href="#">{{product.product.name}}</a>
+                <a class="tab-item" ng-click="addToCart(product)">
+                  {{product.product.price}}zl <i class="icon ion-card"></i>
+                </a>
+              </div>
+            </div>
+
+          </div>
+          <div class="col col-50">
+
+            <div class="item item-image">
+              <img src="shoe.jpg"></div>
+            <div class="item tabs tabs-secondary tabs-icon-left">
+              <a class="tab-item" href="#">{{products[$index+1].product.name}}</a>
+              <a class="tab-item" href="#"> <i class="icon ion-ios-cart-outline"></i>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

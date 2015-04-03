@@ -1,0 +1,115 @@
+/* Empty. Add your own CSS if you like */
+.bs-text-right{
+	text-align: right;
+}
+.bs-text-center{
+	text-align: center;
+}
+.bs-no-padding{
+	padding:0;
+}
+.bs-no-border{
+	border-width: 0;
+}
+
+/*products*/
+.products-info-price{
+	margin-top: auto;
+	margin-bottom: auto;
+	text-align: right;
+}
+.products-info-cart{
+	text-align: left;
+}
+.products-info-cart-button{
+	margin-left: 8px;
+	font-size: 15px;
+}
+.products-row-productname{
+	background-color: rgb(243,243,243);
+}
+.products-row-price{
+	font-size: 13px;
+	background-color: rgb(243,243,243);
+}
+.products-search-input{
+	margin-bottom: 0;
+	margin-top: 8px;
+	padding-bottom: 0;
+	padding-top: 0;
+	border-width: 0;
+	height: 30px;
+}
+/*product detail*/
+.productInfo-productname{
+	text-align: left;
+}
+.productInfo-price{
+	text-align: right;
+}
+.productInfo-list-card{
+	margin-top: 0;
+}
+
+/*Accout*/
+.account-footer-bar{
+	height: 50px;
+}
+button.account-footer-bar-button.button.button-block{
+	font-size: 16px;
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+/*cart*/
+.cart-bar-footer{
+	padding-top: 0;
+	height: 68px;
+}
+.cart-bar-footer-text{
+	font-weight: bold;
+}
+.cart-bar-footer-button{
+	margin-top: 2px;
+}
+.cart-list-quantity{
+	padding-top: 9px;
+ 	padding-bottom: 9px;
+}
+.cart-list-sum{
+	font-weight: bold;
+}
+.cart-bar-footer-sum{
+	/*margin-bottom: */
+}
+
+/*checkout*/
+.checkout-item-info{
+	padding-right: 10px;
+	padding-bottom: 8px;
+}
+.checkout-list-quantity{
+	padding-top: 9px;
+}
+p.checkout-list-sum{
+	padding-top: 9px;
+	font-weight: bold;
+	color: black;
+}
+
+
+
+
+
+/*error display*/
+label.item.has-error {
+  border-bottom: 5px solid #cc2311;
+}
+label.item.has-error-lr {
+  border-left: 5px solid #cc2311;
+  border-right: 5px solid #cc2311;
+}
+form i.icon.error {
+  color: #cc2311;
+  margin-right: 40px; 
+}

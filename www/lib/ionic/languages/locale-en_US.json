@@ -1,0 +1,19 @@
+{
+  "APP_HEADLINE":  "test",
+  "TAB_HOME":      "Home",
+  "TAB_PRODUCTS":  "Products",
+  "TAB_CART":      "Cart",
+  "Cancel": 	   "Cancel",
+  "Accept":		   "Accept",
+  "Filter":		   "Filter",
+  "Max Price":     "Max Price",
+  "Product":	   "Product",
+  "Catalog":	   "Catalog",
+  "Artikel":	   "Artikel",
+  "Clear":		   "Clear",
+  "Cart":		   "Cart",
+  "Total":		   "Total",
+  "Box":		   "Box",
+
+  "NAV_ABOUT":     "About"
+}
