@@ -1,7 +1,8 @@
-<ion-view view-title="{{'Cart'| translate}}" hide-back-button="true">
+<ion-view cache-view="false" view-title="{{'Cart'| translate}}" hide-back-button="true">
   <ion-nav-buttons side="primary">
     <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()"></button>
   </ion-nav-buttons>
+  {{'Cart'| translate}}
   <ion-nav-buttons side="secondary">
     <button class="button button-clear button-positive" ng-if="cart.length>0" ng-click="data.showDelete = !data.showDelete;" translate>Edit</button>
   </ion-nav-buttons>
