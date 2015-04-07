@@ -9,15 +9,19 @@
       <ion-list>
         <label class="item item-input" ng-class="{ 'has-error-lr' : checkOurForm.name.$invalid  && checkOurForm.$submitted}">
           <span class="input-label" ng-class="{ 'assertive' : checkOurForm.name.$invalid  && checkOurForm.$submitted}" translate>Name</span>
-          <input type="text" name="name" ng-model="sendData.name" placeholder="{{'required'|translate}}" required>
+          <input type="text" name="name" ng-model="sendData.name" placeholder="{{'required'|translate}}" ng-blur="saveInLocal('customerName', sendData.name)" required>
         </label>
         <label class="item item-input" ng-class="{ 'has-error-lr' : checkOurForm.telefon.$invalid  && checkOurForm.$submitted}">
           <span class="input-label" ng-class="{ 'assertive' : checkOurForm.telefon.$invalid  && checkOurForm.$submitted}" translate>Telefon Number</span>
-          <input type="text" name="telefon" placeholder="+48" ng-model="sendData.telefon" required>
+          <input type="tel" name="telefon" placeholder="+48" ng-model="sendData.telefon" ng-blur="saveInLocal('telefon', sendData.telefon)" required>
         </label>
         <label class="item item-input">
           <span class="input-label" translate>Address</span>
-          <input type="text" name="address" ng-model="sendData.address" placeholder="{{'optional'|translate}}">
+          <input type="text" name="address" ng-model="sendData.address" placeholder="{{'optional'|translate}}" ng-blur="saveInLocal('address', sendData.address)">
+        </label>
+        <label class="item item-input">
+          <span class="input-label" translate>Message</span>
+          <input type="text" name="message" ng-model="sendData.message" placeholder="{{'optional'|translate}}" ng-blur="saveInLocal('message', sendData.message)">
         </label>
   
       

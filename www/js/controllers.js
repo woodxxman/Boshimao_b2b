@@ -268,23 +268,29 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
     }
     return total;
   };
+
   var customerName = $localstorage.get('customerName','');
   var telefon = $localstorage.get('telefon','');
   var address = $localstorage.get('address','');
+  var message = $localstorage.get('message','');
   $scope.sendData = {
       name : customerName,
       telefon : telefon,
       address : address,
+      message : message,
       cart: $scope.cart
   };
+  $scope.saveInLocal = function(name, value){
+    $localstorage.set(name, value);
+  }
+
   $scope.confirm = function(form) {
     if(form.$valid){
-      //save the default name, telefon, address
-      $localstorage.set('customerName', $scope.sendData.name);
-      $localstorage.set('telefon', $scope.sendData.telefon);
-      $localstorage.set('address', $scope.sendData.address);
+
+      
       //send preorder
       var preorder = new PreOrder($scope.sendData);
+
       preorder.$save(
         function(u, responseHeaders) {
           var myPopup = $ionicPopup.show({
@@ -292,8 +298,10 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
             scope: $scope
           });
           $timeout(function() {
-             myPopup.close(); //close the popup after 3 seconds for some reason
+             myPopup.close(); 
           }, 1500);
+          //clear message
+          $localstorage.set('message', '');
         },
         function(responseHeaders){
           var myPopup = $ionicPopup.show({
@@ -301,8 +309,10 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
             scope: $scope
           });
           $timeout(function() {
-             myPopup.close(); //close the popup after 3 seconds for some reason
+             myPopup.close(); 
           }, 1500);
+          //clear message
+          $localstorage.set('message', '');
       });
     }else{
       return false;
