@@ -233,7 +233,7 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
     $state.go('check-out');
   };
 }])
-.controller('CheckOutCtrl', ['$scope', '$ionicHistory', '$state', '$ionicPopup','$timeout','$localstorage', 'baseURI', 'Cart', 'PreOrder', function($scope, $ionicHistory, $state, $ionicPopup,$timeout,$localstorage, baseURI, Cart, PreOrder) {
+.controller('CheckOutCtrl', ['$scope', '$ionicHistory', '$state', '$ionicPopup','$timeout','$localstorage', 'baseURI', 'Cart', 'PreOrder', 'API_key', function($scope, $ionicHistory, $state, $ionicPopup,$timeout,$localstorage, baseURI, Cart, PreOrder, API_key) {
   $scope.baseURI = baseURI;
   $scope.cart = Cart.query();
   if($scope.cart.length<=0){
@@ -287,21 +287,28 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
   $scope.confirm = function(form) {
     if(form.$valid){
 
-      
       //send preorder
       var preorder = new PreOrder($scope.sendData);
 
       preorder.$save(
         function(u, responseHeaders) {
+          
+          //clear message
+          $localstorage.set('message', '');
+          //clear cart
+          Cart.clearCart();
+          $scope.cart = Cart.query();
+
           var myPopup = $ionicPopup.show({
             title: '<h2> <i class="icon balanced ion-ios-checkmark"></i></h2>',
             scope: $scope
           });
           $timeout(function() {
              myPopup.close(); 
+             $state.go('tab.home');
           }, 1500);
-          //clear message
-          $localstorage.set('message', '');
+          
+
         },
         function(responseHeaders){
           var myPopup = $ionicPopup.show({

@@ -1,11 +1,16 @@
 angular.module('starter.services', ['ngResource'])
 .constant('baseURI', '')
 .constant('MAXQUANTITY', 10)
+.constant('API_key','JASONSYSTEMAPI')
 // http://localhost:8080/SiaderSystemv2
 .factory('ShopProducts', ['$resource', 'baseURI', function($resource, baseURI) {
   var currentCatalog = 2;
   var products = $resource(baseURI+'/rest/shop_products', {}, {
-       query: {method:'GET', params:{catalogId:currentCatalog}, isArray:true}
+       query: {
+          method:'GET', 
+          params:{catalogId:currentCatalog}, 
+          isArray:true
+        }
       }).query();
   
   return {
@@ -93,8 +98,11 @@ angular.module('starter.services', ['ngResource'])
     }
   };
 }])
-.factory('PreOrder', ['$resource', 'baseURI', function($resource, baseURI) {
-  return $resource(baseURI+'/rest/preorders');
+.factory('PreOrder', ['$resource', 'baseURI', 'API_key', function($resource, baseURI, API_key) {
+  console.log("API_key:"+API_key);
+  return $resource(baseURI+'/rest/preorders',{},{
+    save: {method: "POST", headers: {"API_key": API_key}}
+  });
 }])
 .factory('$localstorage', ['$window', function($window) {
   return {
