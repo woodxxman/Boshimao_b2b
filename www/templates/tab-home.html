@@ -1,4 +1,4 @@
-<ion-view view-title="Boshimao" hide-back-button="true">
+<ion-view cache-view="false" view-title="Boshimao" hide-back-button="true">
   <ion-nav-bar class="bar-stable">
     <ion-nav-buttons side="left">
       <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
@@ -9,25 +9,25 @@
       <ion-slide ng-repeat="slide in data.slides">
         <div class="item item-image">
           <a href="#">
-            <img src="test2.jpg"></a>
+            <img ng-src="{{baseURI}}/{{slide.img_src}}"></a>
         </div>
       </ion-slide>
     </ion-slide-box>
-    <div class="row bs-no-padding bs-no-border">
-      <div class="col col-50 bs-no-padding">
-        <div class="item item-image">
-          <a href="#">
-            <img src="test1.jpeg"></a>
+    <div class="padding bs-text-center">Welcome to Boshimao</div>
+    <div ng-repeat="AD in data.ADs">
+      <div class="row bs-no-padding bs-no-border" >
+ <!--        <div class="col-25" ng-if="$index==0">
+          test
+        </div> -->
+        <div class="col bs-no-padding" >
+          <div class="item item-image bs-no-border">
+            <a href="#">
+              <img ng-src="{{baseURI}}/{{AD.img_src}}"></a>
+          </div>
         </div>
       </div>
+      
     </div>
-    <div class="row bs-no-padding bs-no-border">
-      <div class="col bs-no-padding">
-        <div class="item item-image">
-          <a href="#">
-            <img src="test1.jpeg"></a>
-        </div>
-      </div>
-    </div>
+    
   </ion-content>
 </ion-view>

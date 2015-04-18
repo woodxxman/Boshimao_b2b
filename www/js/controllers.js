@@ -1,28 +1,13 @@
 angular.module('starter.controllers', ['pascalprecht.translate'])
 
-.controller('DashCtrl', ['$scope', '$translate', function($scope, $translate) {
+.controller('HomeCtrl', ['$scope', '$translate', 'HomeInfo', '$ionicSlideBoxDelegate', 'baseURI', function($scope, $translate, HomeInfo, $ionicSlideBoxDelegate, baseURI) {
+  $scope.baseURI = baseURI;
   $scope.data = {};
-  $scope.data.slides = [
-  {
-    title : "Slide 1",
-    data  : "Slide 1 Content"
-  },
-  {
-    title : "Slide 2",
-    data  : "Slide 2 Content"
-  },
-  {
-    title : "Slide 3",
-    data  : "Slide 3 Content"
-  }
-  ];
-  $scope.toggleLang = function (key) {
-    $translate.use(key).then(function (key) {
-      console.log("Sprache zu " + key + " gewechselt.");
-    }, function (key) {
-      console.log("Irgendwas lief schief.");
-    });
-  };
+  $scope.data.slides = HomeInfo.query({locaiton:'home',type:1,status:1},function(){
+    $ionicSlideBoxDelegate.update(); 
+  });
+  $scope.data.ADs = HomeInfo.query({locaiton:'home',type:2,status:1});
+  console.log($scope.data);
 }])
 
 .controller('AccountCtrl', function($scope, $translate, $localstorage, $ionicPopup, $ionicHistory, $state) {

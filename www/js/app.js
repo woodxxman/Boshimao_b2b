@@ -79,7 +79,7 @@ $translateProvider.preferredLanguage('en_US')
     views: {
       'tab-home': {
         templateUrl: 'templates/tab-home.html',
-        controller: 'DashCtrl'
+        controller: 'HomeCtrl'
       }
     }
   })

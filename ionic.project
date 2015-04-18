@@ -4,11 +4,15 @@
   "proxies": [
     {
       "path": "/rest",
-      "proxyUrl": "http://127.0.0.1:8080/SiaderSystemv2/rest"
+      "proxyUrl": "https://www.jasonsystem.de/version2/rest"
     },
     {
       "path": "/upload",
-      "proxyUrl": "http://127.0.0.1:8080/SiaderSystemv2/upload"
+      "proxyUrl": "https://www.jasonsystem.de/version2/upload"
+    },
+    {
+      "path": "/images",
+      "proxyUrl": "https://www.jasonsystem.de/version2/images"
     }
   ]
 }

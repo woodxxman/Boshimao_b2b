@@ -1,8 +1,11 @@
 angular.module('starter.services', ['ngResource'])
-.constant('baseURI', '')
+.constant('baseURI', 'https://www.jasonsystem.de/version2')
 .constant('MAXQUANTITY', 10)
 .constant('API_key','JASONSYSTEMAPI')
 // http://localhost:8080/SiaderSystemv2
+.factory('HomeInfo', ['$resource', 'baseURI', function($resource, baseURI) {
+  return $resource(baseURI+'/rest/ADContents');
+}])
 .factory('ShopProducts', ['$resource', 'baseURI', function($resource, baseURI) {
   var currentCatalog = 2;
   var products = $resource(baseURI+'/rest/shop_products', {}, {
