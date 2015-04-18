@@ -2,19 +2,32 @@ angular.module('starter.services', ['ngResource'])
 .constant('baseURI', 'https://www.jasonsystem.de/version2')
 .constant('MAXQUANTITY', 10)
 .constant('API_key','JASONSYSTEMAPI')
-// http://localhost:8080/SiaderSystemv2
+// https://www.jasonsystem.de/version2
 .factory('HomeInfo', ['$resource', 'baseURI', function($resource, baseURI) {
   return $resource(baseURI+'/rest/ADContents');
 }])
-.factory('ShopProducts', ['$resource', 'baseURI', function($resource, baseURI) {
+.factory('ShopProducts', ['$resource', 'baseURI', '$ionicLoading', function($resource, baseURI, $ionicLoading) {
   var currentCatalog = 2;
-  var products = $resource(baseURI+'/rest/shop_products', {}, {
+  var ShopProductsResource = $resource(baseURI+'/rest/shop_products', {}, {
        query: {
           method:'GET', 
           params:{catalogId:currentCatalog}, 
-          isArray:true
+          isArray:true,
+          timeout: 20000
         }
-      }).query();
+      });
+  $ionicLoading.show({
+    content: 'Loading',
+    animation: 'fade-in',
+    showBackdrop: true,
+    showDelay: 0
+  });
+  var products = ShopProductsResource.query(
+    function(){
+      $ionicLoading.hide();
+  },function(){
+      $ionicLoading.hide();
+  });
   
   return {
     setCatalogId: function(catalogId){
@@ -32,9 +45,17 @@ angular.module('starter.services', ['ngResource'])
       return products;
     },
     updateProduct: function(){
-      products = $resource(baseURI+'/rest/shop_products', {}, {
-       query: {method:'GET', params:{catalogId:currentCatalog}, isArray:true}
-      }).query();
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        showDelay: 0
+      });
+      products = ShopProductsResource.query({catalogId:currentCatalog},function(){
+      $ionicLoading.hide();
+    },function(){
+      $ionicLoading.hide();
+    });
     }
   }
 }])
@@ -102,7 +123,6 @@ angular.module('starter.services', ['ngResource'])
   };
 }])
 .factory('PreOrder', ['$resource', 'baseURI', 'API_key', function($resource, baseURI, API_key) {
-  console.log("API_key:"+API_key);
   return $resource(baseURI+'/rest/preorders',{},{
     save: {method: "POST", headers: {"API_key": API_key}}
   });

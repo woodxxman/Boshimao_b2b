@@ -1,13 +1,22 @@
 angular.module('starter.controllers', ['pascalprecht.translate'])
 
-.controller('HomeCtrl', ['$scope', '$translate', 'HomeInfo', '$ionicSlideBoxDelegate', 'baseURI', function($scope, $translate, HomeInfo, $ionicSlideBoxDelegate, baseURI) {
+.controller('HomeCtrl', ['$scope', '$translate', 'HomeInfo', '$ionicSlideBoxDelegate', 'baseURI', '$ionicLoading', function($scope, $translate, HomeInfo, $ionicSlideBoxDelegate, baseURI, $ionicLoading) {
+  $ionicLoading.show({
+    content: 'Loading',
+    animation: 'fade-in',
+    showBackdrop: true,
+    showDelay: 0
+  });
   $scope.baseURI = baseURI;
   $scope.data = {};
-  $scope.data.slides = HomeInfo.query({locaiton:'home',type:1,status:1},function(){
+  $scope.data.slides = HomeInfo.query({locaiton:'home',type:1,status:1},
+    function(){
     $ionicSlideBoxDelegate.update(); 
+    $ionicLoading.hide();
+  },function(){
+    $ionicLoading.hide();
   });
   $scope.data.ADs = HomeInfo.query({locaiton:'home',type:2,status:1});
-  console.log($scope.data);
 }])
 
 .controller('AccountCtrl', function($scope, $translate, $localstorage, $ionicPopup, $ionicHistory, $state) {
