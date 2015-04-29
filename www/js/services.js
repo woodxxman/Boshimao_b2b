@@ -1,13 +1,15 @@
 angular.module('starter.services', ['ngResource'])
-.constant('baseURI', 'https://www.jasonsystem.de/version2')
+.constant('baseURI', '')
 .constant('MAXQUANTITY', 10)
 .constant('API_key','JASONSYSTEMAPI')
 // https://www.jasonsystem.de/version2
+// http://localhost:8080/SiaderSystemv2
 .factory('HomeInfo', ['$resource', 'baseURI', function($resource, baseURI) {
   return $resource(baseURI+'/rest/ADContents');
 }])
 .factory('ShopProducts', ['$resource', 'baseURI', '$ionicLoading', function($resource, baseURI, $ionicLoading) {
   var currentCatalog = 2;
+  var currentCatalogName="";
   var ShopProductsResource = $resource(baseURI+'/rest/shop_products', {}, {
        query: {
           method:'GET', 
@@ -32,6 +34,12 @@ angular.module('starter.services', ['ngResource'])
   return {
     setCatalogId: function(catalogId){
       currentCatalog = catalogId;
+    },
+    setCatalogName: function(catalogName){
+      currentCatalogName = catalogName;
+    },
+    getCatalogName: function(){
+      return currentCatalogName;
     },
     get: function(productId) {
       for (var i = 0; i < products.length; i++) {

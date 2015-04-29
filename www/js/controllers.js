@@ -63,8 +63,9 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
 })
 .controller('CatalogsCtrl', ['$scope', '$rootScope', '$ionicScrollDelegate', '$ionicTabsDelegate', 'Catalogs', 'ShopProducts',function($scope, $rootScope, $ionicScrollDelegate, $ionicTabsDelegate, Catalogs, ShopProducts) {
   $scope.catalogs = Catalogs.query({catalogId:1});
-  $scope.showCatalog = function(catalogId){
+  $scope.showCatalog = function(catalogId, catalogName){
     ShopProducts.setCatalogId(catalogId);
+    ShopProducts.setCatalogName(catalogName);
     ShopProducts.updateProduct();
     $rootScope.$broadcast("catalogChanged");
 
@@ -75,6 +76,7 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
 
 .controller('ProductsCtrl', ['$scope', '$state', 'ShopProducts', 'Cart', 'baseURI', 'productsFilter', 'FilterInfo', '$rootScope', '$ionicModal', function($scope, $state, ShopProducts, Cart, baseURI, productsFilter, FilterInfo, $rootScope, $ionicModal) {
   $scope.baseURI = baseURI;
+  $scope.title = "Product";
   $scope.products = ShopProducts.query();
   $scope.filter = {};
   $scope.filter.maxPrice = FilterInfo.getMaxPrice();
@@ -85,6 +87,7 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
   $scope.$on('catalogChanged', function (event, data) {
     $scope.filter.active = false;
     $scope.filter.searchStr = '';
+    $scope.title = ShopProducts.getCatalogName()
     $scope.products = ShopProducts.query();
   });
   $ionicModal.fromTemplateUrl('templates/products-filter.html', {
