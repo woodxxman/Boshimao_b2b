@@ -4,7 +4,7 @@
   "proxies": [
     {
       "path": "/rest",
-      "proxyUrl": "http://localhost:8080/SiaderSystemv2/rest"
+      "proxyUrl": "https://www.jasonsystem.de/version2/rest"
     },
     {
       "path": "/upload",

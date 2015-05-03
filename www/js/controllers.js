@@ -2,7 +2,7 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
 
 .controller('HomeCtrl', ['$scope', '$translate', 'HomeInfo', '$ionicSlideBoxDelegate', 'baseURI', '$ionicLoading', function($scope, $translate, HomeInfo, $ionicSlideBoxDelegate, baseURI, $ionicLoading) {
   $ionicLoading.show({
-    content: 'Loading',
+    template: '<button class="button button-icon button-clear icon ion-loading-d"></button>',
     animation: 'fade-in',
     showBackdrop: true,
     showDelay: 0
@@ -51,11 +51,9 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
    });
    confirmPopup.then(function(res) {
      if(res) {
-        console.log($localstorage);
         $localstorage.clearAll();
-        console.log($localstorage);
      } else {
-       console.log('You are not sure');
+       // console.log('You are not sure');
      }
    });
   }
@@ -66,29 +64,129 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
   $scope.showCatalog = function(catalogId, catalogName){
     ShopProducts.setCatalogId(catalogId);
     ShopProducts.setCatalogName(catalogName);
-    ShopProducts.updateProduct();
+    // ShopProducts.updateProduct();
     $rootScope.$broadcast("catalogChanged");
-
     $ionicScrollDelegate.scrollTop();
     $ionicTabsDelegate.select(1);
   }
 }])
 
-.controller('ProductsCtrl', ['$scope', '$state', 'ShopProducts', 'Cart', 'baseURI', 'productsFilter', 'FilterInfo', '$rootScope', '$ionicModal', function($scope, $state, ShopProducts, Cart, baseURI, productsFilter, FilterInfo, $rootScope, $ionicModal) {
+.controller('ProductsCtrl', ['$scope', '$state', 'ShopProducts', 'Cart', 'baseURI', 'productsFilter', 'FilterInfo', '$rootScope', '$ionicModal', '$ionicScrollDelegate', '$ionicLoading', function($scope, $state, ShopProducts, Cart, baseURI, productsFilter, FilterInfo, $rootScope, $ionicModal, $ionicScrollDelegate, $ionicLoading) {
+  
+  $scope.hasMore = false;
+  $scope.items_in_view = [];
+  var load_size = 8;
+  $ionicLoading.show({
+    template: '<button class="button button-icon button-clear icon ion-loading-d"></button>',
+    animation: 'fade-in',
+    showBackdrop: true,
+    maxWidth: 200,
+    showDelay: 0
+  });
+
   $scope.baseURI = baseURI;
   $scope.title = "Product";
-  $scope.products = ShopProducts.query();
+  //load products
+  var products_in_currentCatalog = [];
+  $scope.products = ShopProducts.resource().query({catalogId:ShopProducts.getCatalogId()},function(data){
+    if($scope.products.length>0){
+      $scope.products.sort(function(a, b){
+        return a.product.name.localeCompare(b.product.name);
+      });
+      $scope.hasMore = true;
+      $scope.loadMore();
+      // console.log($scope.items_in_view);
+      products_in_currentCatalog = $scope.products
+    }
+    $ionicLoading.hide();
+  },function(){
+    $ionicLoading.hide();
+  });
   $scope.filter = {};
   $scope.filter.maxPrice = FilterInfo.getMaxPrice();
   $scope.filter.searchStr = FilterInfo.getSearchStr();
   $scope.filter.active = false;
+  
+  // var load_time = 1;
+
+  // if($scope.products.length>load_index){
+  //   for (var i = load_index-1; i >= 0; i--) {
+  //     $scope.items_in_view.push($scope.products[i]);
+  //   };
+  //   $scope.hasMore = true;
+  // }else{
+  //   for (var i = $scope.products.length-1; i >= 0; i--) {
+  //     $scope.items_in_view.push($scope.products[i]);
+  //   };
+  //   $scope.hasMore = false;
+  // }
+  
+
+  $scope.loadMore = function() {
+    if($scope.hasMore){
+      // console.log("products_size:"+$scope.products.length);
+      // console.log("$scope.items_in_view.length:"+$scope.items_in_view.length);
+      // console.log("load_size:"+load_size);
+      if($scope.products.length>=$scope.items_in_view.length+load_size){
+        for (var i =0; i<load_size ; i++) {
+          $scope.items_in_view.push($scope.products[$scope.items_in_view.length]);
+        };
+        if($scope.products.length>$scope.items_in_view.length+load_size)
+          $scope.hasMore = true;
+        else
+          $scope.hasMore = false;
+      }else{
+        for (var i =0; i<$scope.products.length%load_size; i++) {
+          $scope.items_in_view.push($scope.products[$scope.items_in_view.length]);
+        };
+        $scope.hasMore = false;
+      }
+      $ionicScrollDelegate.resize();
+    }
+    // console.log($scope.items_in_view);
+    $scope.$broadcast('scroll.infiniteScrollComplete');
+  };
+  $scope.moreDataCanBeLoaded = function(){
+    // console.log("check can be loaded"+$scope.hasMore);
+    return $scope.hasMore;
+  }
+  $scope.clearItemInView = function(){
+    $scope.hasMore = false;
+    $scope.items_in_view = [];
+  }
+
+
+  // $scope.$on('$stateChangeSuccess', function() {
+  //   $scope.loadMore();
+  // });
+
 
   // update products when catalog changed
   $scope.$on('catalogChanged', function (event, data) {
+    $scope.clearItemInView();
+    $ionicLoading.show({
+      template: '<button class="button button-icon button-clear icon ion-loading-d"></button>',
+      animation: 'fade-in',
+      showBackdrop: true,
+      showDelay: 0
+    });
     $scope.filter.active = false;
     $scope.filter.searchStr = '';
     $scope.title = ShopProducts.getCatalogName()
-    $scope.products = ShopProducts.query();
+    $scope.products = ShopProducts.resource().query({catalogId:ShopProducts.getCatalogId()},function(){
+      products_in_currentCatalog = []
+      if($scope.products.length>0){
+        $scope.products.sort(function(a, b){
+          return a.product.name.localeCompare(b.product.name);
+        });
+        $scope.hasMore = true;
+        $scope.loadMore();
+        products_in_currentCatalog = $scope.products;
+      }
+      $ionicLoading.hide();
+    },function(){
+      $ionicLoading.hide();
+    });
   });
   $ionicModal.fromTemplateUrl('templates/products-filter.html', {
     scope: $scope,
@@ -104,29 +202,61 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
   };
   $scope.getNameFilter = function(){
     FilterInfo.setSearchStr($scope.filter.searchStr);
-    $scope.products = productsFilter(ShopProducts.query(), $scope.filter.searchStr);
+    $scope.products = productsFilter(products_in_currentCatalog, $scope.filter.searchStr);
+    if($scope.products.length>0){
+      $scope.items_in_view = [];
+      $scope.hasMore = true;
+      $scope.loadMore();
+    }else{
+      $scope.items_in_view = [];
+      $scope.hasMore = false;
+    }
+    
   }
   $scope.getFilter = function(){
     $scope.filter.active = true;
     FilterInfo.setSearchStr($scope.filter.searchStr);
     FilterInfo.setMaxPrice($scope.filter.maxPrice);
-    $scope.products = productsFilter(ShopProducts.query(), $scope.filter.searchStr, $scope.filter.maxPrice);
+    $scope.products = productsFilter(products_in_currentCatalog, $scope.filter.searchStr, $scope.filter.maxPrice);
+    if($scope.products.length>0){
+      $scope.items_in_view = [];
+      $scope.hasMore = true;
+      $scope.loadMore();
+    }else{
+      $scope.items_in_view = [];
+      $scope.hasMore = false;
+    }
     $scope.modal.hide();
   };
   $scope.clearSearchStr = function(){
     $scope.filter.searchStr = '';
     if($scope.filter.active)
-      $scope.products = productsFilter(ShopProducts.query(), $scope.filter.searchStr, $scope.filter.maxPrice);
+      $scope.products = productsFilter(products_in_currentCatalog, $scope.filter.searchStr, $scope.filter.maxPrice);
     else
-      $scope.products = ShopProducts.query();
-    
+      $scope.products = products_in_currentCatalog;
+    if($scope.products.length>0){
+      $scope.items_in_view = [];
+      $scope.hasMore = true;
+      $scope.loadMore();
+    }else{
+      $scope.items_in_view = [];
+      $scope.hasMore = false;
+    }
   }
   $scope.clearFilter = function(){
     FilterInfo.reset();
     $scope.filter.active = false;
     $scope.filter.maxPrice = FilterInfo.getMaxPrice();
     $scope.filter.searchStr = FilterInfo.getSearchStr();
-    $scope.products = ShopProducts.query();
+    $scope.products = products_in_currentCatalog;
+    if($scope.products.length>0){
+      $scope.items_in_view = [];
+      $scope.hasMore = true;
+      $scope.loadMore();
+    }else{
+      $scope.items_in_view = [];
+      $scope.hasMore = false;
+    }
     $scope.modal.hide();
   }
   //Cleanup the modal when we're done with it!
@@ -143,12 +273,19 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
   // $scope.$on('$destroy', destoryListener);
 
   $scope.doRefresh = function() {
-    ShopProducts.updateProduct();
+    $scope.clearItemInView();
     $scope.filter.active = false;
     $scope.filter.searchStr = '';
-    $scope.products = ShopProducts.query();
-    $scope.$broadcast('scroll.refreshComplete');
-    $scope.$apply()
+    $scope.products = ShopProducts.resource().query({catalogId:ShopProducts.getCatalogId()},function(){
+      if($scope.products.length>0){
+        $scope.hasMore = true;
+        $scope.loadMore();
+      }
+      $scope.$broadcast('scroll.refreshComplete');
+    },function(){
+      $scope.$broadcast('scroll.refreshComplete');
+    });
+    
   };
   $scope.addToCart = function(product) {
     Cart.addCartItem(product);
@@ -159,12 +296,31 @@ angular.module('starter.controllers', ['pascalprecht.translate'])
   };
 }])
 
-.controller('ProductDetailCtrl', ['$scope', '$stateParams', '$ionicHistory', '$state', 'ShopProducts', 'Cart', 'baseURI', function($scope, $stateParams, $ionicHistory, $state, ShopProducts, Cart, baseURI) {
+.controller('ProductDetailCtrl', ['$scope', '$stateParams', '$ionicHistory', '$state', 'ShopProducts', 'Cart', 'baseURI', '$ionicLoading', function($scope, $stateParams, $ionicHistory, $state, ShopProducts, Cart, baseURI, $ionicLoading) {
   $scope.baseURI = baseURI;
-  $scope.productInfo = ShopProducts.get($stateParams.productId);
-  if($scope.productInfo==null){
-    $state.go('tab.products');
-  }
+  
+  $scope.$on('$stateChangeSuccess', function () {
+    $ionicLoading.show({
+      template: '<button class="button button-icon button-clear icon ion-loading-d"></button>',
+      animation: 'fade-in',
+      showBackdrop: true,
+      maxWidth: 200,
+      showDelay: 0
+    });
+
+    $scope.productInfo = ShopProducts.singleResource().get({SPId: $stateParams.shopProductId}, function(data){
+      //console.log($scope.productInfo);
+      //find no match!
+      if(typeof $scope.productInfo.id == 'undefined'){
+        $ionicLoading.hide();
+        $state.go('tab.products');
+      }else{
+        $ionicLoading.hide();
+      }
+    }, function(){
+      $ionicLoading.hide();
+    })
+  });
   $scope.goBack = function(){
     if($ionicHistory.backView()!=null)
       $ionicHistory.goBack();

@@ -1,5 +1,5 @@
 angular.module('starter.services', ['ngResource'])
-.constant('baseURI', '')
+.constant('baseURI', 'https://www.jasonsystem.de/version2')
 .constant('MAXQUANTITY', 10)
 .constant('API_key','JASONSYSTEMAPI')
 // https://www.jasonsystem.de/version2
@@ -13,27 +13,23 @@ angular.module('starter.services', ['ngResource'])
   var ShopProductsResource = $resource(baseURI+'/rest/shop_products', {}, {
        query: {
           method:'GET', 
-          params:{catalogId:currentCatalog}, 
           isArray:true,
           timeout: 20000
         }
       });
-  $ionicLoading.show({
-    content: 'Loading',
-    animation: 'fade-in',
-    showBackdrop: true,
-    showDelay: 0
-  });
-  var products = ShopProductsResource.query(
-    function(){
-      $ionicLoading.hide();
-  },function(){
-      $ionicLoading.hide();
-  });
+  var ShopProductResource = $resource(baseURI+'/rest/shop_products/:SPId');
+  //get all products from the serve
+  // var products = [];
+  // ShopProductsResource.query({},function(data){
+  //   products = data;
+  // });
   
   return {
     setCatalogId: function(catalogId){
       currentCatalog = catalogId;
+    },
+    getCatalogId: function(){
+      return currentCatalog;
     },
     setCatalogName: function(catalogName){
       currentCatalogName = catalogName;
@@ -41,30 +37,37 @@ angular.module('starter.services', ['ngResource'])
     getCatalogName: function(){
       return currentCatalogName;
     },
-    get: function(productId) {
-      for (var i = 0; i < products.length; i++) {
-        if (products[i].product.id === parseInt(productId)) {
-          return products[i];
-        }
-      }
-      return null;
+    singleResource: function() {
+      // ShopProductResource.get({SPId: ShopProductId}, function(data){
+      //   console.log("get shop_product");
+      //   console.log(data);
+      //   return null;
+      // });
+      return ShopProductResource;
+      // for (var i = 0; i < products.length; i++) {
+      //   if (products[i].product.id === parseInt(productId)) {
+      //     return products[i];
+      //   }
+      // }
+      
     },
-    query: function() {
-      return products;
-    },
-    updateProduct: function(){
-      $ionicLoading.show({
-        content: 'Loading',
-        animation: 'fade-in',
-        showBackdrop: true,
-        showDelay: 0
-      });
-      products = ShopProductsResource.query({catalogId:currentCatalog},function(){
-      $ionicLoading.hide();
-    },function(){
-      $ionicLoading.hide();
-    });
+    resource: function(){
+      return ShopProductsResource;
     }
+    // query: function() {
+    //   return products;
+    // },
+    // updateProduct: function(){
+    //   console.log();
+    //   ShopProductsResource.query({catalogId:currentCatalog},
+    //     function(){
+    //       products = 
+    //       return 
+    //     },function(){
+    //       return null;
+    //     }
+    //   );
+    // }
   }
 }])
 .factory('Catalogs', ['$resource', 'baseURI', function($resource, baseURI) {
@@ -82,7 +85,7 @@ angular.module('starter.services', ['ngResource'])
     addCartItem: function(product){
       var listIndex = pids.indexOf(product.product.id);
       if(listIndex==-1){
-        var item = {pid:product.product.id,name:product.product.name,quantity:1,price:product.product.price,pack:product.product.pack};
+        var item = {spid:product.id, pid:product.product.id,name:product.product.name,quantity:1,price:product.product.price,pack:product.product.pack};
         cart.push(item);
         pids.push(product.product.id);
       }else{

@@ -110,7 +110,7 @@ $translateProvider.preferredLanguage('en_US')
 
   // })
   .state('product-detail', {
-    url: '/product-detail/:productId',
+    url: '/product-detail/:shopProductId',
 
         templateUrl: 'templates/product-detail.html',
         controller: 'ProductDetailCtrl'
@@ -159,7 +159,6 @@ $translateProvider.preferredLanguage('en_US')
           out.push(products[i]);
         }
       }
-      
     }
     return out;
   };
